@@ -46,6 +46,9 @@ def appServe(reqPath):
     except FileNotFoundError:
         return Response("", 404)
 
+@api.route("/firstRun")
+def firstRunCheck():
+    return firstRun
 
 application = DispatcherMiddleware(app, {
     '/api': api,
@@ -75,4 +78,6 @@ def main(args):
         import webbrowser
         webbrowser.open_new("http://localhost:1024")
 
-    run_simple('localhost', 1024, application, use_reloader=True, use_debugger=False, use_evalex=True)
+    
+
+    run_simple('localhost', 1024, application, use_reloader=False, use_debugger=False, use_evalex=True)

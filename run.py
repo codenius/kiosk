@@ -1,8 +1,17 @@
 import argparse
 import sys, os, subprocess
+from shutil import copyfile
 
 os.chdir(os.path.split(__file__)[0] if os.path.split(__file__)[0] != "" else ".") 
 sys.path += ["lib", "backend"] # adds import paths
+
+if not os.path.exists("backend/config.py"):
+    copyfile("backend/templates/config.py", "backend/config.py")
+    firstRun = 1
+import config
+if not os.path.exists("frontend/config.json"):
+    copyfile("frontend/js/templates/config.json", "frontend/config.json")
+    firstRun = 1
 
 def upgradeDependencies():   #not working with autoreload of flask
         try:
@@ -58,6 +67,9 @@ if __name__ == "__main__":
         upgradeDependencies()
         __import__("flask")
 
-    # starts the server 
     import server
+
+    args.firstRun = firstRun
+
+    # starts the server 
     server.main(args)
